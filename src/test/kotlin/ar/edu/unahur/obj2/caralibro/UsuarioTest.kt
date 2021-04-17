@@ -7,6 +7,9 @@ class UsuarioTest : DescribeSpec({
   describe("Caralibro") {
     val saludoCumpleanios = Texto("Felicidades Pepito, que los cumplas muy feliz")
     val fotoEnCuzco = Foto(768, 1024)
+    val videoDeCumpleaños = Video ("SD", 3000)
+    val videoDeCumpleañosEn720 = Video ("HD720", 3000)
+    val videoDeCumpleñosEn1080 = Video ("HD1080", 3000)
 
     describe("Una publicación") {
       describe("de tipo foto") {
@@ -18,6 +21,17 @@ class UsuarioTest : DescribeSpec({
       describe("de tipo texto") {
         it("ocupa tantos bytes como su longitud") {
           saludoCumpleanios.espacioQueOcupa().shouldBe(45)
+        }
+      }
+      describe ("de tipo Video") {
+        it ("cuanto espacio ocupa el SD") {
+          videoDeCumpleaños.espacioQueOcupa().shouldBe(3000)
+        }
+        it ("cuanto espacio ocupa el HD720") {
+          videoDeCumpleañosEn720.espacioQueOcupa().shouldBe(9000)
+        }
+        it ("cuanto espacio ocupa el HD1080") {
+          videoDeCumpleñosEn1080.espacioQueOcupa().shouldBe(18000)
         }
       }
     }
