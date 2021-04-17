@@ -48,7 +48,6 @@ class UsuarioTest : DescribeSpec({
         juana.agregarPublicacion(videoDeCumpleanios)
         juana.espacioDePublicaciones().shouldBe(553548)
 
-
       }
     }
   }
