@@ -9,8 +9,9 @@ abstract class Publicacion {
 }
 
 class Foto(val alto: Int, val ancho: Int) : Publicacion() {
-  val factorDeCompresion = 0.7
+  var factorDeCompresion = 0.7
   override fun espacioQueOcupa() = ceil(alto * ancho * factorDeCompresion).toInt()
+  fun cambiarFactorDeCompresion(nuevoValor : Double) { factorDeCompresion = nuevoValor }
 }
 
 class Texto(val contenido: String) : Publicacion() {
@@ -30,6 +31,9 @@ class Video (var calidad : String, var duracionSegundos : Int) : Publicacion() {
       tamañoVideo = (duracionSegundos * 3) * 2
     }
     return tamañoVideo
+  }
+  fun cambiarCalidadDelVideo (calidadNueva : String) {
+    calidad = calidadNueva
   }
 }
 

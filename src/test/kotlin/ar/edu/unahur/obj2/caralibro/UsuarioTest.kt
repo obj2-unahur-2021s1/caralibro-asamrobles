@@ -33,6 +33,10 @@ class UsuarioTest : DescribeSpec({
         it ("cuanto espacio ocupa el HD1080") {
           videoDeCumpleñosEn1080.espacioQueOcupa().shouldBe(18000)
         }
+        videoDeCumpleaños.cambiarCalidadDelVideo("HD720")
+        it ("cuanto espacio ocupa el SD despues de cambiar si calidad a HD720") {
+          videoDeCumpleaños.espacioQueOcupa().shouldBe(9000)
+        }
       }
     }
 
@@ -41,7 +45,10 @@ class UsuarioTest : DescribeSpec({
         val juana = Usuario()
         juana.agregarPublicacion(fotoEnCuzco)
         juana.agregarPublicacion(saludoCumpleanios)
-        juana.espacioDePublicaciones().shouldBe(550548)
+        juana.agregarPublicacion(videoDeCumpleaños)
+        juana.espacioDePublicaciones().shouldBe(553548)
+
+
       }
     }
   }
