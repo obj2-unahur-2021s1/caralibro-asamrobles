@@ -1,8 +1,6 @@
 package ar.edu.unahur.obj2.caralibro
 
-import java.lang.NullPointerException
 import kotlin.math.ceil
-import kotlin.reflect.jvm.internal.impl.resolve.constants.NullValue
 
 abstract class Publicacion {
   abstract fun espacioQueOcupa(): Int
@@ -19,18 +17,18 @@ class Texto(val contenido: String) : Publicacion() {
 }
 
 class Video (var calidad : String, var duracionSegundos : Int) : Publicacion() {
-  var tamañoVideo = 0
+  var tamanioVideo = 0
   override fun espacioQueOcupa(): Int {
     if (calidad == "SD") {
-      tamañoVideo = duracionSegundos
+      tamanioVideo = duracionSegundos
     }
     if (calidad == "HD720") {
-      tamañoVideo = duracionSegundos * 3
+      tamanioVideo = duracionSegundos * 3
     }
     if (calidad == "HD1080") {
-      tamañoVideo = (duracionSegundos * 3) * 2
+      tamanioVideo = (duracionSegundos * 3) * 2
     }
-    return tamañoVideo
+    return tamanioVideo
   }
   fun cambiarCalidadDelVideo (calidadNueva : String) {
     calidad = calidadNueva
