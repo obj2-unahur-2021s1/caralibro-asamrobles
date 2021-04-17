@@ -3,9 +3,11 @@ package ar.edu.unahur.obj2.caralibro
 import kotlin.math.ceil
 
 abstract class Publicacion {
+  var cantidadDeMeGusta = 0
   abstract fun espacioQueOcupa(): Int
+  fun darMeGusta() {  cantidadDeMeGusta += 1 }
+  fun cuantasVecesFueVotada() = cantidadDeMeGusta
 }
-
 class Foto(val alto: Int, val ancho: Int) : Publicacion() {
   var factorDeCompresion = 0.7
   override fun espacioQueOcupa() = ceil(alto * ancho * factorDeCompresion).toInt()

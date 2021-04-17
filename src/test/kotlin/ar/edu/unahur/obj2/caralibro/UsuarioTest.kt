@@ -1,6 +1,7 @@
 package ar.edu.unahur.obj2.caralibro
 
 import io.kotest.core.spec.style.DescribeSpec
+import io.kotest.matchers.ints.shouldBeLessThan
 import io.kotest.matchers.shouldBe
 
 class UsuarioTest : DescribeSpec({
@@ -10,6 +11,11 @@ class UsuarioTest : DescribeSpec({
     val videoDeCumpleanios = Video ("SD", 3000)
     val videoDeCumpleaniosEn720 = Video ("HD720", 3000)
     val videoDeCumpleniosEn1080 = Video ("HD1080", 3000)
+
+    fotoEnCuzco.darMeGusta()
+    fotoEnCuzco.darMeGusta()
+    fotoEnCuzco.darMeGusta()
+    videoDeCumpleanios.darMeGusta()
 
     describe("Una publicación") {
       describe("de tipo foto") {
@@ -38,17 +44,28 @@ class UsuarioTest : DescribeSpec({
           videoDeCumpleanios.espacioQueOcupa().shouldBe(9000)
         }
       }
+
+      describe ("Cuantas veces fue botada una publicacion") {
+        it ("Cuantas veces fue botada Cuzco se espera 3") {
+          fotoEnCuzco.cuantasVecesFueVotada().shouldBe(3)
+        }
+        it ("Cuantas veces fue botada videoDeCumpleaños se espera 1") {
+          videoDeCumpleanios.cuantasVecesFueVotada().shouldBe(1)
+        }
+      }
     }
 
     describe("Un usuario") {
-      it("puede calcular el espacio que ocupan sus publicaciones") {
-        val juana = Usuario()
-        juana.agregarPublicacion(fotoEnCuzco)
-        juana.agregarPublicacion(saludoCumpleanios)
-        juana.agregarPublicacion(videoDeCumpleanios)
-        juana.espacioDePublicaciones().shouldBe(553548)
+      val juana = Usuario()
+      juana.agregarPublicacion(fotoEnCuzco)
+      juana.agregarPublicacion(saludoCumpleanios)
+      juana.agregarPublicacion(videoDeCumpleanios)
 
+      it("puede calcular el espacio que ocupan sus publicaciones") {
+
+        juana.espacioDePublicaciones().shouldBe(553548)
       }
     }
   }
+
 })
