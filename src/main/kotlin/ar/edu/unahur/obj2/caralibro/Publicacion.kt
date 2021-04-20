@@ -4,12 +4,20 @@ import kotlin.math.ceil
 
 abstract class Publicacion {
   var cantidadDeMeGusta = 0
+  lateinit var permiso: Permiso // var de tipo permiso sin inicializar
+
   abstract fun espacioQueOcupa(): Int
+
   fun darMeGusta() {  cantidadDeMeGusta += 1 }
   fun cuantasVecesFueVotada() = cantidadDeMeGusta
+
+  fun cargarPermiso(permisoNuevo: Permiso) { this.permiso = permisoNuevo }
+  fun puedeSerVistoPor(usuario: Usuario) = this.permiso.permiteVerAUsuario(usuario)
 }
+
 class Foto(val alto: Int, val ancho: Int) : Publicacion() {
   var factorDeCompresion = 0.7
+
   override fun espacioQueOcupa() = ceil(alto * ancho * factorDeCompresion).toInt()
   fun cambiarFactorDeCompresion(nuevoValor : Double) { factorDeCompresion = nuevoValor }
 }

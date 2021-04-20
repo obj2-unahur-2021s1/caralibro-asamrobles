@@ -2,12 +2,13 @@ package ar.edu.unahur.obj2.caralibro
 
 class Usuario {
   val publicaciones = mutableListOf<Publicacion>()
-  val amigos = mutableListOf<Amigo>()
+  val amigos = mutableListOf<Usuario>()
 
-  fun agregarPublicacion(publicacion: Publicacion) {
+  fun agregarPublicacionYPermiso(publicacion: Publicacion, permiso: Permiso) {
+    publicacion.cargarPermiso(permiso)
     publicaciones.add(publicacion)
   }
-  fun agregarAmigo(amigoNuevo :Amigo) {amigos.add(amigoNuevo)}
+  fun agregarAmigo(amigoNuevo: Usuario) {amigos.add(amigoNuevo)}
 
   fun cantidadDeAmigos() = amigos.size
 
