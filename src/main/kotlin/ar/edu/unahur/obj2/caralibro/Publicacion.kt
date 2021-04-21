@@ -3,14 +3,14 @@ package ar.edu.unahur.obj2.caralibro
 import kotlin.math.ceil
 
 abstract class Publicacion {
-  var cantidadDeMeGusta = 0
+  var listaDeMeGusta = mutableSetOf<Usuario>()
   lateinit var permiso: Permiso // var de tipo permiso sin inicializar
 
   abstract fun espacioQueOcupa(): Int
 
-  fun darMeGusta() {  cantidadDeMeGusta += 1 }
+  fun darMeGusta(usuario: Usuario) { listaDeMeGusta.add(usuario) }
 
-  fun cuantasVecesFueVotada() = cantidadDeMeGusta
+  fun cuantasVecesFueVotada() = listaDeMeGusta.size
 
   fun cargarPermiso(permisoNuevo: Permiso) { this.permiso = permisoNuevo }
 

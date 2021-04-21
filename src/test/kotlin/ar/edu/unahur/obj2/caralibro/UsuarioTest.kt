@@ -38,10 +38,10 @@ class UsuarioTest : DescribeSpec({
     juana.agregarAmigo(faloiFede)
 
     // Acciones Sobre las publicaciones
-    fotoEnCuzco.darMeGusta()
-    fotoEnCuzco.darMeGusta()
-    fotoEnCuzco.darMeGusta()
-    videoDeCumpleanios.darMeGusta()
+    fotoEnCuzco.darMeGusta(ferAsam)
+    fotoEnCuzco.darMeGusta(luchoRobles)
+    fotoEnCuzco.darMeGusta(faloiFede)
+    videoDeCumpleanios.darMeGusta(pepe)
 
     //Tests
 
