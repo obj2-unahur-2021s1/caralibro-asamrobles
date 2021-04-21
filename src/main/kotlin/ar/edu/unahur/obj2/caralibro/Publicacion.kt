@@ -9,10 +9,14 @@ abstract class Publicacion {
   abstract fun espacioQueOcupa(): Int
 
   fun darMeGusta() {  cantidadDeMeGusta += 1 }
+
   fun cuantasVecesFueVotada() = cantidadDeMeGusta
 
   fun cargarPermiso(permisoNuevo: Permiso) { this.permiso = permisoNuevo }
-  fun puedeSerVistoPor(usuario: Usuario) = this.permiso.permiteVerAUsuario(usuario)
+
+  fun esPublicacionPropia(usuario: Usuario) = usuario.publicaciones.contains(this)
+
+  fun puedeSerVistoPor(usuario: Usuario) = this.permiso.permiteVerAUsuario(usuario) || this.esPublicacionPropia(usuario)
 }
 
 class Foto(val alto: Int, val ancho: Int) : Publicacion() {

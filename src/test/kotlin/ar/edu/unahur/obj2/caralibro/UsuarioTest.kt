@@ -110,6 +110,12 @@ class UsuarioTest : DescribeSpec({
       describe("Saber si un usuario puede ver una publicacion de otro") {
         juana.agregarAmigo(pepe)
 
+        it("el usuario siempre puede ver sus publicaciones sin importar el permiso") {
+          fotoEnCuzco.puedeSerVistoPor(juana).shouldBeTrue()
+          videoDeCumpleanios.puedeSerVistoPor(juana).shouldBeTrue()
+          saludoCumpleanios.puedeSerVistoPor(juana).shouldBeTrue()
+        }
+
         it("pepe puede ver fotoEnCuzco con permiso soloAmigos") {
           fotoEnCuzco.puedeSerVistoPor(pepe).shouldBeTrue()
         }
