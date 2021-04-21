@@ -107,6 +107,22 @@ class UsuarioTest : DescribeSpec({
         juana.cualEsMasAmistoso(juana, pepe).shouldBe(pepe)
       }
 
+      describe("un me gusta por usuario") {
+        it("la cantidad de me gusta debe ser 3 para fotoEnCuzco y 1 para videoDeCumpleanios") {
+          fotoEnCuzco.cuantasVecesFueVotada().shouldBe(3)
+          videoDeCumpleanios.cuantasVecesFueVotada().shouldBe(1)
+        }
+      }
+      describe("me gusta dados por usuarios que ya lo hicieron no modifican el total de votos de la publicacion") {
+        fotoEnCuzco.darMeGusta(ferAsam)
+        videoDeCumpleanios.darMeGusta(pepe)
+
+        it("la cantidad de me gusta debe ser 3 para fotoEnCuzco y 1 para videoDeCumpleanios") {
+          fotoEnCuzco.cuantasVecesFueVotada().shouldBe(3)
+          videoDeCumpleanios.cuantasVecesFueVotada().shouldBe(1)
+        }
+      }
+
       describe("Saber si un usuario puede ver una publicacion de otro") {
         juana.agregarAmigo(pepe)
 
@@ -115,7 +131,6 @@ class UsuarioTest : DescribeSpec({
           videoDeCumpleanios.puedeSerVistoPor(juana).shouldBeTrue()
           saludoCumpleanios.puedeSerVistoPor(juana).shouldBeTrue()
         }
-
         it("pepe puede ver fotoEnCuzco con permiso soloAmigos") {
           fotoEnCuzco.puedeSerVistoPor(pepe).shouldBeTrue()
         }
