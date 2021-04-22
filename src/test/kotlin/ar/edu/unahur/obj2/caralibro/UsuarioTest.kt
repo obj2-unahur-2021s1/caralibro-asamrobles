@@ -2,6 +2,8 @@ package ar.edu.unahur.obj2.caralibro
 
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.*
+import io.kotest.matchers.collections.shouldContainAll
+import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
 
 class UsuarioTest : DescribeSpec({
@@ -12,6 +14,10 @@ class UsuarioTest : DescribeSpec({
     val videoDeCumpleanios = Video ("SD", 3000)
     val videoDeCumpleaniosEn720 = Video ("HD720", 3000)
     val videoDeCumpleniosEn1080 = Video ("HD1080", 3000)
+    val saludoVacaciones = Texto("Ojala te toque buen clima Pepito, que descanses")
+    val fotoEnLima = Foto(768, 1024)
+    val fotoEnArequipa = Foto(1080, 1920)
+    val videoDeVacaciones = Video ("HD720", 3000)
 
     // Usuarios
     val juana = Usuario()
@@ -30,7 +36,7 @@ class UsuarioTest : DescribeSpec({
     //Agregar publicaciones y permisos
     juana.agregarPublicacionYPermiso(fotoEnCuzco, SoloAmigos(juana.amigos))
     juana.agregarPublicacionYPermiso(saludoCumpleanios, Excluyente(mutableListOf(pepe, ferAsam)))
-    juana.agregarPublicacionYPermiso(videoDeCumpleanios, Incluyente(mutableListOf(faloiFede, luchoRobles)))
+    juana.agregarPublicacionYPermiso(videoDeCumpleanios, Incluyente(mutableListOf(faloiFede, jorge)))
 
     //Agregar amigos
     juana.agregarAmigo(ferAsam)
@@ -113,6 +119,7 @@ class UsuarioTest : DescribeSpec({
           videoDeCumpleanios.cuantasVecesFueVotada().shouldBe(1)
         }
       }
+
       describe("me gusta dados por usuarios que ya lo hicieron no modifican el total de votos de la publicacion") {
         fotoEnCuzco.darMeGusta(ferAsam)
         videoDeCumpleanios.darMeGusta(pepe)
@@ -154,7 +161,13 @@ class UsuarioTest : DescribeSpec({
         juana.agregarAmigo(jorge)
         juana.agregarAmigo(diego)
         juana.agregarAmigo(marcos)
-        juana.agregarAmigo(marcelo)
+        juana.agregarPublicacionYPermiso(saludoVacaciones, Excluyente(mutableListOf(marcos, diego)))
+        juana.agregarPublicacionYPermiso(fotoEnLima, Incluyente(mutableListOf(ferAsam, marcos, marcelo, jorge)))
+        juana.agregarPublicacionYPermiso(fotoEnArequipa, SoloAmigos(juana.amigos))
+        juana.agregarPublicacionYPermiso(videoDeVacaciones, Incluyente(mutableListOf(marcelo)))
+        var listaMejoresAmigos = mutableListOf<Usuario>(ferAsam, jorge, luchoRobles, faloiFede)
+
+        juana.amigosQueVenTodasLasPublicaciones().shouldContainExactlyInAnyOrder(listaMejoresAmigos)
       }
     }
   }

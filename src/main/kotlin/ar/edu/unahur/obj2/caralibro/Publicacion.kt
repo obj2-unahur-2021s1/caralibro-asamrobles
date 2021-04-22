@@ -8,15 +8,13 @@ abstract class Publicacion {
 
   abstract fun espacioQueOcupa(): Int
 
-  fun darMeGusta(usuario: Usuario) { listaDeMeGusta.add(usuario) }
+  fun darMeGusta(usuario: Usuario) { this.listaDeMeGusta.add(usuario) }
 
-  fun cuantasVecesFueVotada() = listaDeMeGusta.size
+  fun cuantasVecesFueVotada() = this.listaDeMeGusta.size
 
   fun cargarPermiso(permisoNuevo: Permiso) { this.permiso = permisoNuevo }
 
-  fun esPublicacionPropia(usuario: Usuario) = usuario.publicaciones.contains(this)
-
-  fun puedeSerVistoPor(usuario: Usuario) = this.permiso.permiteVerAUsuario(usuario) || this.esPublicacionPropia(usuario)
+  fun puedeSerVistoPor(usuario: Usuario) = this.permiso.permiteVerAUsuario(usuario) || usuario.esPublicacionPropia(this)
 }
 
 class Foto(val alto: Int, val ancho: Int) : Publicacion() {
