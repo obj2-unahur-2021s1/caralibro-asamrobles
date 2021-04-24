@@ -46,4 +46,3 @@ class Video (var calidad : String, var duracionSegundos : Int) : Publicacion() {
     calidad = calidadNueva
   }
 }
-
