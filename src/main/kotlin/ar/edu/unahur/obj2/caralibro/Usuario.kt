@@ -45,7 +45,7 @@ class Usuario {
     val excluidos2 = excluidos
 
     if (amigos.contains(excluidos2))
-    // sacar todos los excluidos de la lista nueva de amigos y retornarla.
+  // sacar todos los excluidos de la lista nueva de amigos y retornarla.
       return amigos2
   }
 }
