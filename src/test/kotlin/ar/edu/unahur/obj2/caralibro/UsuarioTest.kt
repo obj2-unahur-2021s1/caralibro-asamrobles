@@ -206,7 +206,7 @@ class UsuarioTest : DescribeSpec({
       }
       describe("Req 6: cual es el amigo mas popular de un usuario") {
 
-        it("el amigo mas popular de juana es luchoRobles") {
+        it("el amigo mas popular de juana es faloiFede") {
           juana.amigoMasPopular().shouldBe(faloiFede)
         }
         it("ferAsam no es el amigo mas popular de juana") {
