@@ -1,10 +1,10 @@
 package ar.edu.unahur.obj2.caralibro
 
-abstract class Permiso() {
+abstract class Permiso {
     abstract fun permiteVerAUsuario(usuario: Usuario): Boolean
 }
 
-class Publico(): Permiso() {
+class Publico: Permiso() {
     override fun permiteVerAUsuario(usuario: Usuario) = true
 }
 class SoloAmigos(var amigos: List<Usuario>): Permiso() {

@@ -3,49 +3,43 @@ package ar.edu.unahur.obj2.caralibro
 class Usuario {
   val publicaciones = mutableListOf<Publicacion>()
   val amigos = mutableListOf<Usuario>()
-  val excluidos = mutableListOf<Usuario>()
-  val incluidos = mutableListOf<Usuario>()
-
-
-  fun agregarExcluidos(usuario: Usuario) {
-    excluidos.add(usuario)
-  }
-
-  fun agregarIncluidos(usuario: Usuario) {
-    incluidos.add(usuario)
-  }
 
   fun agregarPublicacionYPermiso(publicacion: Publicacion, permiso: Permiso) {
     publicacion.cargarPermiso(permiso)
     this.publicaciones.add(publicacion)
   }
+  fun darMeGusta(publicacion: Publicacion) { publicacion.agregarMeGusta(this) }
 
-  fun agregarAmigo(amigoNuevo: Usuario) {
-    amigos.add(amigoNuevo)
-  }
+  fun agregarAmigo(amigoNuevo: Usuario) { this.amigos.add(amigoNuevo) }
 
   fun cantidadDeAmigos() = this.amigos.size
 
+  fun cantidadPublicaciones() = this.publicaciones.size
+
   fun espacioDePublicaciones() = this.publicaciones.sumBy { it.espacioQueOcupa() }
 
-  fun cualEsMasAmistoso(usuario1: Usuario, usuario2: Usuario): Usuario {
+  fun esPublicacionPropia(publicacion: Publicacion) = this.publicaciones.contains(publicacion)
+
+  //Requerimiento 3
+  fun cualEsMasAmistoso(usuario1: Usuario ,usuario2 : Usuario) : Usuario {
     var elMasAmistoso = Usuario()
     if (usuario1.cantidadDeAmigos() > usuario2.cantidadDeAmigos()) {
       elMasAmistoso = usuario1
-    } else elMasAmistoso = usuario2
+    }
+    else elMasAmistoso = usuario2
     return elMasAmistoso
   }
 
-  fun esPublicacionPropia(publicacion: Publicacion) = publicaciones.contains(publicacion)
+  //Requerimiento 5
+  fun publicacionesQPuedeVer(usuario: Usuario) = this.publicaciones.filter{ it.puedeSerVistoPor(usuario) }
 
-  fun totalPublicacionesQuePuedeVerAmigo(amigo: Usuario) = this.publicaciones.filter { it.puedeSerVistoPor(amigo) }.size
+  fun esMejorAmigo(usuario: Usuario) = this.publicacionesQPuedeVer(usuario).size == this.cantidadPublicaciones()
 
-  fun amigosQueVenTodasLasPublicaciones() {
-    var amigos2 = amigos
-    val excluidos2 = excluidos
+  fun mejoresAmigos() = this.amigos.filter { a -> this.esMejorAmigo(a) }.toSet()
 
-    if (amigos.contains(excluidos2))
-  // sacar todos los excluidos de la lista nueva de amigos y retornarla.
-      return amigos2
-  }
+  //Requerimiento 6
+  fun meGustaTotal() = this.publicaciones.sumBy { it.cuantasVecesFueVotada() }
+
+  fun amigoMasPopular() = this.amigos.maxByOrNull { it.meGustaTotal() }
+
 }

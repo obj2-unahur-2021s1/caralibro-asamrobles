@@ -4,11 +4,11 @@ import kotlin.math.ceil
 
 abstract class Publicacion {
   var listaDeMeGusta = mutableSetOf<Usuario>()
-  lateinit var permiso: Permiso // var de tipo permiso sin inicializar
+  lateinit var permiso: Permiso // var de tipo Permiso sin inicializar
 
   abstract fun espacioQueOcupa(): Int
 
-  fun darMeGusta(usuario: Usuario) { this.listaDeMeGusta.add(usuario) }
+  fun agregarMeGusta(usuario: Usuario) { this.listaDeMeGusta.add(usuario) }
 
   fun cuantasVecesFueVotada() = this.listaDeMeGusta.size
 

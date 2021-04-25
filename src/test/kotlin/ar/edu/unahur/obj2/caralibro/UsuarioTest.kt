@@ -2,9 +2,9 @@ package ar.edu.unahur.obj2.caralibro
 
 import io.kotest.core.spec.style.DescribeSpec
 import io.kotest.matchers.booleans.*
-import io.kotest.matchers.collections.shouldContainAll
 import io.kotest.matchers.collections.shouldContainExactlyInAnyOrder
 import io.kotest.matchers.shouldBe
+import io.kotest.matchers.shouldNotBe
 
 class UsuarioTest : DescribeSpec({
   describe("Caralibro") {
@@ -13,30 +13,43 @@ class UsuarioTest : DescribeSpec({
     val fotoEnCuzco = Foto(768, 1024)
     val videoDeCumpleanios = Video ("SD", 3000)
     val videoDeCumpleaniosEn720 = Video ("HD720", 3000)
-    val videoDeCumpleniosEn1080 = Video ("HD1080", 3000)
+    val videoDeCumpleaniosEn1080 = Video ("HD1080", 3000)
     val saludoVacaciones = Texto("Ojala te toque buen clima Pepito, que descanses")
-    val fotoEnLima = Foto(768, 1024)
     val fotoEnArequipa = Foto(1080, 1920)
-    val videoDeVacaciones = Video ("HD720", 3000)
+    val fotoEnChascomus = Foto(1080, 1920)
+    val videoEnMendoza = Video("HD720", 5000)
+    val saludoMendoza = Texto("Vacaciones etilicas")
+    val saludoChascomus = Texto("Atalaya ya no es lo mismo")
 
     // Usuarios
     val juana = Usuario()
-
-    // Amigos
     val ferAsam = Usuario()
     val luchoRobles = Usuario()
     val faloiFede = Usuario()
     val jorge = Usuario()
     val diego = Usuario()
     val marcos = Usuario()
-    val marcelo = Usuario()
     val pepe = Usuario()
 
     // Acciones Sobre los usuarios
     //Agregar publicaciones y permisos
     juana.agregarPublicacionYPermiso(fotoEnCuzco, SoloAmigos(juana.amigos))
-    juana.agregarPublicacionYPermiso(saludoCumpleanios, Excluyente(mutableListOf(pepe, ferAsam)))
-    juana.agregarPublicacionYPermiso(videoDeCumpleanios, Incluyente(mutableListOf(faloiFede, jorge)))
+    juana.agregarPublicacionYPermiso(saludoCumpleanios, Excluyente(mutableListOf(pepe, jorge)))
+    juana.agregarPublicacionYPermiso(videoDeCumpleanios, Incluyente(mutableListOf(faloiFede, ferAsam, luchoRobles)))
+
+    //luchoRobles
+    luchoRobles.agregarPublicacionYPermiso(videoDeCumpleaniosEn720, SoloAmigos(luchoRobles.amigos))
+    luchoRobles.agregarPublicacionYPermiso(videoDeCumpleaniosEn1080, Excluyente(mutableListOf(pepe, jorge)))
+
+    //ferAsam
+    ferAsam.agregarPublicacionYPermiso(saludoVacaciones, Incluyente(mutableListOf(faloiFede, ferAsam)))
+    ferAsam.agregarPublicacionYPermiso(fotoEnArequipa, Publico())
+
+    //faloiFede
+    faloiFede.agregarPublicacionYPermiso(fotoEnChascomus, Incluyente(mutableListOf(pepe, jorge)))
+    faloiFede.agregarPublicacionYPermiso(videoEnMendoza, SoloAmigos(faloiFede.amigos))
+    faloiFede.agregarPublicacionYPermiso(saludoMendoza, SoloAmigos(faloiFede.amigos))
+    faloiFede.agregarPublicacionYPermiso(saludoChascomus, SoloAmigos(faloiFede.amigos))
 
     //Agregar amigos
     juana.agregarAmigo(ferAsam)
@@ -44,10 +57,32 @@ class UsuarioTest : DescribeSpec({
     juana.agregarAmigo(faloiFede)
 
     // Acciones Sobre las publicaciones
-    fotoEnCuzco.darMeGusta(ferAsam)
-    fotoEnCuzco.darMeGusta(luchoRobles)
-    fotoEnCuzco.darMeGusta(faloiFede)
-    videoDeCumpleanios.darMeGusta(pepe)
+    //juana
+    ferAsam.darMeGusta(fotoEnCuzco)
+    luchoRobles.darMeGusta(fotoEnCuzco)
+    faloiFede.darMeGusta(fotoEnCuzco)
+    pepe.darMeGusta(videoDeCumpleanios)
+
+    //luchoRobles
+    ferAsam.darMeGusta(videoDeCumpleaniosEn720)
+    juana.darMeGusta(videoDeCumpleaniosEn720)
+    faloiFede.darMeGusta(videoDeCumpleaniosEn720)
+    ferAsam.darMeGusta(videoDeCumpleaniosEn1080)
+
+    //ferAsam
+    luchoRobles.darMeGusta(saludoVacaciones)
+    faloiFede.darMeGusta(fotoEnArequipa)
+    juana.darMeGusta(fotoEnArequipa)
+
+    //faloiFede
+    luchoRobles.darMeGusta(fotoEnChascomus)
+    ferAsam.darMeGusta(fotoEnChascomus)
+    juana.darMeGusta(fotoEnChascomus)
+    luchoRobles.darMeGusta(videoEnMendoza)
+    ferAsam.darMeGusta(videoEnMendoza)
+    juana.darMeGusta(videoEnMendoza)
+    juana.darMeGusta(saludoChascomus)
+    juana.darMeGusta(saludoMendoza)
 
     //Tests
 
@@ -72,7 +107,7 @@ class UsuarioTest : DescribeSpec({
           videoDeCumpleaniosEn720.espacioQueOcupa().shouldBe(9000)
         }
         it ("cuanto espacio ocupa el HD1080") {
-          videoDeCumpleniosEn1080.espacioQueOcupa().shouldBe(18000)
+          videoDeCumpleaniosEn1080.espacioQueOcupa().shouldBe(18000)
         }
         videoDeCumpleanios.cambiarCalidadDelVideo("HD720")
         it ("cuanto espacio ocupa el SD despues de cambiar su calidad a HD720") {
@@ -121,8 +156,8 @@ class UsuarioTest : DescribeSpec({
       }
 
       describe("me gusta dados por usuarios que ya lo hicieron no modifican el total de votos de la publicacion") {
-        fotoEnCuzco.darMeGusta(ferAsam)
-        videoDeCumpleanios.darMeGusta(pepe)
+        ferAsam.darMeGusta(fotoEnCuzco)
+        pepe.darMeGusta(videoDeCumpleanios)
 
         it("la cantidad de me gusta debe ser 3 para fotoEnCuzco y 1 para videoDeCumpleanios") {
           fotoEnCuzco.cuantasVecesFueVotada().shouldBe(3)
@@ -130,7 +165,7 @@ class UsuarioTest : DescribeSpec({
         }
       }
 
-      describe("Saber si un usuario puede ver una publicacion de otro") {
+      describe("Req: Saber si un usuario puede ver una publicacion de otro") {
         juana.agregarAmigo(pepe)
 
         it("el usuario siempre puede ver sus publicaciones sin importar el permiso") {
@@ -162,12 +197,24 @@ class UsuarioTest : DescribeSpec({
         juana.agregarAmigo(diego)
         juana.agregarAmigo(marcos)
         juana.agregarPublicacionYPermiso(saludoVacaciones, Excluyente(mutableListOf(marcos, diego)))
-        juana.agregarPublicacionYPermiso(fotoEnLima, Incluyente(mutableListOf(ferAsam, marcos, marcelo, jorge)))
         juana.agregarPublicacionYPermiso(fotoEnArequipa, SoloAmigos(juana.amigos))
-        juana.agregarPublicacionYPermiso(videoDeVacaciones, Incluyente(mutableListOf(marcelo)))
-        var listaMejoresAmigos = mutableListOf<Usuario>(ferAsam, jorge, luchoRobles, faloiFede)
+        val listaMejoresAmigos = mutableListOf(ferAsam, luchoRobles, faloiFede)
 
-        juana.amigosQueVenTodasLasPublicaciones().shouldContainExactlyInAnyOrder(listaMejoresAmigos)
+        it("mejores Amigos: ferAsam, luchoRobles, faloiFede") {
+          juana.mejoresAmigos().shouldContainExactlyInAnyOrder(listaMejoresAmigos)
+        }
+      }
+      describe("Req 6: cual es el amigo mas popular de un usuario") {
+
+        it("el amigo mas popular de juana es luchoRobles") {
+          juana.amigoMasPopular().shouldBe(faloiFede)
+        }
+        it("ferAsam no es el amigo mas popular de juana") {
+          juana.amigoMasPopular().shouldNotBe(ferAsam)
+        }
+        it("luchoRobles no es el amigo mas popular de juana") {
+          juana.amigoMasPopular().shouldNotBe(luchoRobles)
+        }
       }
     }
   }
