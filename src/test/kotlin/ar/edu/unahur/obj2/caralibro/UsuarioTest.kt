@@ -17,6 +17,8 @@ class UsuarioTest : DescribeSpec({
     val saludoVacaciones = Texto("Ojala te toque buen clima Pepito, que descanses")
     val fotoEnArequipa = Foto(1080, 1920)
     val fotoEnChascomus = Foto(1080, 1920)
+    val fotoEnSantiago = Foto(1080, 1920)
+    val fotoEnCordoba = Foto(768, 1024)
     val videoEnMendoza = Video("HD720", 5000)
     val saludoMendoza = Texto("Vacaciones etilicas")
     val saludoChascomus = Texto("Atalaya ya no es lo mismo")
@@ -33,6 +35,7 @@ class UsuarioTest : DescribeSpec({
 
     // Acciones Sobre los usuarios
     //Agregar publicaciones y permisos
+    //juana
     juana.agregarPublicacionYPermiso(fotoEnCuzco, SoloAmigos(juana.amigos))
     juana.agregarPublicacionYPermiso(saludoCumpleanios, Excluyente(mutableListOf(pepe, jorge)))
     juana.agregarPublicacionYPermiso(videoDeCumpleanios, Incluyente(mutableListOf(faloiFede, ferAsam, luchoRobles)))
@@ -56,7 +59,7 @@ class UsuarioTest : DescribeSpec({
     juana.agregarAmigo(luchoRobles)
     juana.agregarAmigo(faloiFede)
 
-    // Acciones Sobre las publicaciones
+    //Acciones Sobre las publicaciones
     //juana
     ferAsam.darMeGusta(fotoEnCuzco)
     luchoRobles.darMeGusta(fotoEnCuzco)
@@ -88,8 +91,24 @@ class UsuarioTest : DescribeSpec({
 
     describe("Una publicación") {
       describe("de tipo foto") {
-        it("ocupa ancho * alto * compresion bytes") {
+        juana.agregarPublicacionYPermiso(fotoEnCordoba, Publico())
+        juana.agregarPublicacionYPermiso(fotoEnSantiago, Publico())
+
+        it("espacio que ocupa con factor de compresion 0.7") {
           fotoEnCuzco.espacioQueOcupa().shouldBe(550503)
+          fotoEnCordoba.espacioQueOcupa().shouldBe(550503)
+          fotoEnSantiago.espacioQueOcupa().shouldBe(1451520)
+        }
+        describe("cambio de factor de compresion") {
+          juana.agregarPublicacionYPermiso(fotoEnCordoba, Publico())
+          juana.agregarPublicacionYPermiso(fotoEnSantiago, Publico())
+          juana.cambiarFactorCompresionParaTodas(0.35)
+
+          it("el espacio que ocupa cada foto con factor de compresion 0.35 debe ser la mitad que con 0.7 para todas") {
+            fotoEnCuzco.espacioQueOcupa().shouldBe(275252)
+            fotoEnCordoba.espacioQueOcupa().shouldBe(275252)
+            fotoEnSantiago.espacioQueOcupa().shouldBe(725760)
+          }
         }
       }
 
@@ -137,7 +156,7 @@ class UsuarioTest : DescribeSpec({
         pepe.cantidadDeAmigos().shouldBe(0)
       }
       it(" Cual es mas amistoso pepe o juana : Es Juana") {
-        juana.cualEsMasAmistoso(juana, pepe).shouldBe(juana)
+        juana.esMasAmistosoQue(pepe).shouldBeTrue()
       }
       pepe.agregarAmigo(luchoRobles)
       pepe.agregarAmigo(luchoRobles)
@@ -145,7 +164,7 @@ class UsuarioTest : DescribeSpec({
       pepe.agregarAmigo(luchoRobles)
 
       it("Cual es mas amistoso pepe o juana : Es Pepe") {
-        juana.cualEsMasAmistoso(juana, pepe).shouldBe(pepe)
+        pepe.esMasAmistosoQue(juana).shouldBeTrue()
       }
 
       describe("un me gusta por usuario") {
@@ -165,7 +184,7 @@ class UsuarioTest : DescribeSpec({
         }
       }
 
-      describe("Req: Saber si un usuario puede ver una publicacion de otro") {
+      describe("Req 4: Saber si un usuario puede ver una publicacion de otro") {
         juana.agregarAmigo(pepe)
 
         it("el usuario siempre puede ver sus publicaciones sin importar el permiso") {
@@ -205,7 +224,6 @@ class UsuarioTest : DescribeSpec({
         }
       }
       describe("Req 6: cual es el amigo mas popular de un usuario") {
-
         it("el amigo mas popular de juana es faloiFede") {
           juana.amigoMasPopular().shouldBe(faloiFede)
         }
@@ -214,6 +232,14 @@ class UsuarioTest : DescribeSpec({
         }
         it("luchoRobles no es el amigo mas popular de juana") {
           juana.amigoMasPopular().shouldNotBe(luchoRobles)
+        }
+      }
+      describe("Req 7: saber si un usuario stalkea a otro") {
+        it("juana stalkea a faloiFede") {
+          juana.stalkeaA(faloiFede).shouldBeTrue()
+        }
+        it("luchoRobles no stalkea a faloiFede") {
+          luchoRobles.stalkeaA(faloiFede).shouldBeFalse()
         }
       }
     }

@@ -15,12 +15,15 @@ abstract class Publicacion {
   fun cargarPermiso(permisoNuevo: Permiso) { this.permiso = permisoNuevo }
 
   fun puedeSerVistoPor(usuario: Usuario) = this.permiso.permiteVerAUsuario(usuario) || usuario.esPublicacionPropia(this)
+
+  fun dioMeGusta(usuario: Usuario) = this.listaDeMeGusta.contains(usuario)
 }
 
 class Foto(val alto: Int, val ancho: Int) : Publicacion() {
   var factorDeCompresion = 0.7
 
   override fun espacioQueOcupa() = ceil(alto * ancho * factorDeCompresion).toInt()
+
   fun cambiarFactorDeCompresion(nuevoValor : Double) { factorDeCompresion = nuevoValor }
 }
 
@@ -28,21 +31,13 @@ class Texto(val contenido: String) : Publicacion() {
   override fun espacioQueOcupa() = contenido.length
 }
 
-class Video (var calidad : String, var duracionSegundos : Int) : Publicacion() {
-  var tamanioVideo = 0
-  override fun espacioQueOcupa(): Int {
-    if (calidad == "SD") {
-      tamanioVideo = duracionSegundos
+class Video(var calidad: String, var duracionSegundos: Int): Publicacion() {
+  override fun espacioQueOcupa() =
+    when (this.calidad) {
+      "SD" -> { duracionSegundos }
+      "HD720" -> { duracionSegundos * 3 }
+      else -> { duracionSegundos * 3 * 2 }
     }
-    if (calidad == "HD720") {
-      tamanioVideo = duracionSegundos * 3
-    }
-    if (calidad == "HD1080") {
-      tamanioVideo = (duracionSegundos * 3) * 2
-    }
-    return tamanioVideo
-  }
-  fun cambiarCalidadDelVideo (calidadNueva : String) {
-    calidad = calidadNueva
-  }
+
+  fun cambiarCalidadDelVideo(calidadNueva: String) { this.calidad = calidadNueva }
 }

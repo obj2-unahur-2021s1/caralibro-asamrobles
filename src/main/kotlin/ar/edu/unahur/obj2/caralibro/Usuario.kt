@@ -10,6 +10,15 @@ class Usuario {
   }
   fun darMeGusta(publicacion: Publicacion) { publicacion.agregarMeGusta(this) }
 
+  fun cambiarFactorSiEsFoto(publicacion: Publicacion, factor: Double) {
+    if (publicacion is Foto) {
+      publicacion.cambiarFactorDeCompresion(factor)
+    }
+  }
+  fun cambiarFactorCompresionParaTodas(factor: Double) {
+    this.publicaciones.forEach { p -> this.cambiarFactorSiEsFoto(p, factor) }
+  }
+
   fun agregarAmigo(amigoNuevo: Usuario) { this.amigos.add(amigoNuevo) }
 
   fun cantidadDeAmigos() = this.amigos.size
@@ -21,17 +30,10 @@ class Usuario {
   fun esPublicacionPropia(publicacion: Publicacion) = this.publicaciones.contains(publicacion)
 
   //Requerimiento 3
-  fun cualEsMasAmistoso(usuario1: Usuario ,usuario2 : Usuario) : Usuario {
-    var elMasAmistoso = Usuario()
-    if (usuario1.cantidadDeAmigos() > usuario2.cantidadDeAmigos()) {
-      elMasAmistoso = usuario1
-    }
-    else elMasAmistoso = usuario2
-    return elMasAmistoso
-  }
+  fun esMasAmistosoQue(usuario: Usuario) = this.cantidadDeAmigos() > usuario.cantidadDeAmigos()
 
   //Requerimiento 5
-  fun publicacionesQPuedeVer(usuario: Usuario) = this.publicaciones.filter{ it.puedeSerVistoPor(usuario) }
+  fun publicacionesQPuedeVer(usuario: Usuario) = this.publicaciones.filter { it.puedeSerVistoPor(usuario) }
 
   fun esMejorAmigo(usuario: Usuario) = this.publicacionesQPuedeVer(usuario).size == this.cantidadPublicaciones()
 
@@ -42,4 +44,8 @@ class Usuario {
 
   fun amigoMasPopular() = this.amigos.maxByOrNull { it.meGustaTotal() }
 
+  //Requerimiento 7
+  fun cantidadMeGustaQueDio(usuario: Usuario) = usuario.publicaciones.count { it.dioMeGusta(this) }
+
+  fun stalkeaA(usuario: Usuario) = this.cantidadMeGustaQueDio(usuario) > usuario.cantidadPublicaciones() * 0.9
 }
