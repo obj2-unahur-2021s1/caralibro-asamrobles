@@ -8,8 +8,6 @@ class Usuario {
     publicacion.cargarPermiso(permiso)
     this.publicaciones.add(publicacion)
   }
-  fun darMeGusta(publicacion: Publicacion) { publicacion.agregarMeGusta(this) }
-
   fun cambiarFactorSiEsFoto(publicacion: Publicacion, factor: Double) {
     if (publicacion is Foto) {
       publicacion.cambiarFactorDeCompresion(factor)
@@ -21,21 +19,25 @@ class Usuario {
 
   fun agregarAmigo(amigoNuevo: Usuario) { this.amigos.add(amigoNuevo) }
 
-  fun cantidadDeAmigos() = this.amigos.size
-
-  fun cantidadPublicaciones() = this.publicaciones.size
-
+  //Requerimiento 1
   fun espacioDePublicaciones() = this.publicaciones.sumBy { it.espacioQueOcupa() }
 
-  fun esPublicacionPropia(publicacion: Publicacion) = this.publicaciones.contains(publicacion)
+  //Requerimiento 2
+  fun darMeGusta(publicacion: Publicacion) { publicacion.agregarMeGusta(this) }
 
   //Requerimiento 3
+  fun cantidadDeAmigos() = this.amigos.size
+
   fun esMasAmistosoQue(usuario: Usuario) = this.cantidadDeAmigos() > usuario.cantidadDeAmigos()
 
   //Requerimiento 4
-  fun puedeVerPublicacion(publicacion: Publicacion) = publicacion.puedeSerVistaPor(this)
+  fun esPublicacionPropia(publicacion: Publicacion) = this.publicaciones.contains(publicacion)
+
+  fun puedeVerPublicacion(publicacion: Publicacion) = publicacion.puedeSerVistaPor(this) || this.esPublicacionPropia(publicacion)
 
   //Requerimiento 5
+  fun cantidadPublicaciones() = this.publicaciones.size
+
   fun publicacionesQPuedeVer(usuario: Usuario) = this.publicaciones.filter { it.puedeSerVistaPor(usuario) }
 
   fun esMejorAmigo(usuario: Usuario) = this.publicacionesQPuedeVer(usuario).size == this.cantidadPublicaciones()

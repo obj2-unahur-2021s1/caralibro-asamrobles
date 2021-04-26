@@ -14,7 +14,7 @@ abstract class Publicacion {
 
   fun cargarPermiso(permisoNuevo: Permiso) { this.permiso = permisoNuevo }
 
-  fun puedeSerVistaPor(usuario: Usuario) = this.permiso.permiteVerAUsuario(usuario) || usuario.esPublicacionPropia(this)
+  fun puedeSerVistaPor(usuario: Usuario) = this.permiso.permiteVerAUsuario(usuario)
 
   fun dioMeGusta(usuario: Usuario) = this.listaDeMeGusta.contains(usuario)
 }
