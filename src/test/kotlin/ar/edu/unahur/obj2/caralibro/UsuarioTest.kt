@@ -145,7 +145,6 @@ class UsuarioTest : DescribeSpec({
     }
 
     describe("Un usuario") {
-
       it("puede calcular el espacio que ocupan sus publicaciones") {
         juana.espacioDePublicaciones().shouldBe(553548)
       }
@@ -166,14 +165,12 @@ class UsuarioTest : DescribeSpec({
       it("Cual es mas amistoso pepe o juana : Es Pepe") {
         pepe.esMasAmistosoQue(juana).shouldBeTrue()
       }
-
       describe("un me gusta por usuario") {
         it("la cantidad de me gusta debe ser 3 para fotoEnCuzco y 1 para videoDeCumpleanios") {
           fotoEnCuzco.cuantasVecesFueVotada().shouldBe(3)
           videoDeCumpleanios.cuantasVecesFueVotada().shouldBe(1)
         }
       }
-
       describe("me gusta dados por usuarios que ya lo hicieron no modifican el total de votos de la publicacion") {
         ferAsam.darMeGusta(fotoEnCuzco)
         pepe.darMeGusta(videoDeCumpleanios)
@@ -183,34 +180,31 @@ class UsuarioTest : DescribeSpec({
           videoDeCumpleanios.cuantasVecesFueVotada().shouldBe(1)
         }
       }
-
       describe("Req 4: Saber si un usuario puede ver una publicacion de otro") {
         juana.agregarAmigo(pepe)
 
         it("el usuario siempre puede ver sus publicaciones sin importar el permiso") {
-          fotoEnCuzco.puedeSerVistoPor(juana).shouldBeTrue()
-          videoDeCumpleanios.puedeSerVistoPor(juana).shouldBeTrue()
-          saludoCumpleanios.puedeSerVistoPor(juana).shouldBeTrue()
+          juana.puedeVerPublicacion(fotoEnCuzco).shouldBeTrue()
+          juana.puedeVerPublicacion(videoDeCumpleanios).shouldBeTrue()
+          juana.puedeVerPublicacion(saludoCumpleanios).shouldBeTrue()
         }
         it("pepe puede ver fotoEnCuzco con permiso soloAmigos") {
-          fotoEnCuzco.puedeSerVistoPor(pepe).shouldBeTrue()
+          pepe.puedeVerPublicacion(fotoEnCuzco).shouldBeTrue()
         }
         it("pepe no puede ver videoCumpleanios con permiso incluyente") {
-          videoDeCumpleanios.puedeSerVistoPor(pepe).shouldBeFalse()
+          pepe.puedeVerPublicacion(videoDeCumpleanios).shouldBeFalse()
         }
         it("pepe no puede ver saludoCumpleanios con permiso excluyente") {
-          saludoCumpleanios.puedeSerVistoPor(pepe).shouldBeFalse()
+          pepe.puedeVerPublicacion(saludoCumpleanios).shouldBeFalse()
         }
       }
-
       describe("Cambio de permiso fotoEnCuzco a Excluyente") {
         fotoEnCuzco.cargarPermiso(Excluyente(mutableListOf(pepe, ferAsam, faloiFede)))
 
         it("pepe no puede ver fotoEnCuzco con permiso excluyente") {
-          fotoEnCuzco.puedeSerVistoPor(pepe).shouldBeFalse()
+          pepe.puedeVerPublicacion(fotoEnCuzco).shouldBeFalse()
         }
       }
-
       describe("Req 5: Mejores amigos de un usuario") {
         juana.agregarAmigo(jorge)
         juana.agregarAmigo(diego)

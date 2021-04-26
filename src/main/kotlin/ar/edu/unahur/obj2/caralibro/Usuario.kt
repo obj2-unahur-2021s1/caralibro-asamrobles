@@ -32,8 +32,11 @@ class Usuario {
   //Requerimiento 3
   fun esMasAmistosoQue(usuario: Usuario) = this.cantidadDeAmigos() > usuario.cantidadDeAmigos()
 
+  //Requerimiento 4
+  fun puedeVerPublicacion(publicacion: Publicacion) = publicacion.puedeSerVistaPor(this)
+
   //Requerimiento 5
-  fun publicacionesQPuedeVer(usuario: Usuario) = this.publicaciones.filter { it.puedeSerVistoPor(usuario) }
+  fun publicacionesQPuedeVer(usuario: Usuario) = this.publicaciones.filter { it.puedeSerVistaPor(usuario) }
 
   fun esMejorAmigo(usuario: Usuario) = this.publicacionesQPuedeVer(usuario).size == this.cantidadPublicaciones()
 
